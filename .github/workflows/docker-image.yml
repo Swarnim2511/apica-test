@@ -31,5 +31,8 @@ jobs:
           docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test
 
       - name: Update ECS service
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws ecs update-service --cluster apica-test --service apica-test --force-new-deployment
