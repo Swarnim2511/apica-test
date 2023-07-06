@@ -23,8 +23,13 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          
         run: |
           aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 103431365848.dkr.ecr.eu-north-1.amazonaws.com
           docker build -t apica-test .
           docker tag apica-test 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test
           docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test
+
+      - name: Update ECS service
+        run: |
+          aws ecs update-service --cluster apica-test --service apica-test --force-new-deployment
