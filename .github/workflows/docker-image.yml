@@ -27,8 +27,8 @@ jobs:
         run: |
           aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 103431365848.dkr.ecr.eu-north-1.amazonaws.com
           docker build -t apica-test .
-          docker tag apica-test 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test:$IMAGE_TAG
-          docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test:$IMAGE_TAG
+          docker tag apica-test 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test:${{ github.run_number }}
+          docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica-test:${{ github.run_number }}
 
       - name: Update ECS service
         env:
