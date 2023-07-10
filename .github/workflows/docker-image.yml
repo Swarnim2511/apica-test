@@ -36,6 +36,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-north-1
         run: |
-            aws ecs update-service --cluster apica-test --service apica-test --force-new-deployment
+            aws ecs update-service --cluster apica-poc --service apica-poc --force-new-deployment
 
 
