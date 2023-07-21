@@ -46,5 +46,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-north-1
         run: |
-            aws ecs update-service --cluster apica-test --service poc --force-new-deployment --task-definition $TASK_DEF_ARN
+            aws ecs update-service --cluster apica-test --service poc --force-new-deployment --force-new-deployment --task-definition "${TASK_DEF_ARN}"
 
