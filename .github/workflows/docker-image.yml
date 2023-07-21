@@ -29,23 +29,22 @@ jobs:
           latest_task_def_arn=$(aws ecs list-task-definitions --family-prefix asm-identity --status ACTIVE --output json | jq -r '.taskDefinitionArns | sort_by(. | split(":")[-1] | tonumber) | reverse | .[0]')
           echo "TASK_DEF_ARN=$latest_task_def_arn"
 
-#      - name: Build and push Docker image
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          
-#        run: |
-#          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 103431365848.dkr.ecr.eu-north-1.amazonaws.com
-#          docker build -t apica-test .
-#          docker tag apica-test 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica
-#          docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica
-#
-#     - name: Update ECS service
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          AWS_DEFAULT_REGION: eu-north-1
-#        run: |
-#            aws ecs update-service --cluster apica-poc --service apica-poc --force-new-deployment
+      - name: Build and push Docker image
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 103431365848.dkr.ecr.eu-north-1.amazonaws.com
+          docker build -t apica-test .
+          docker tag apica-test 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica
+          docker push 103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica
 
+      - name: Update ECS service
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-north-1
+        run: |
+            aws ecs update-service --cluster apica-test --service poc --force-new-deployment
 
