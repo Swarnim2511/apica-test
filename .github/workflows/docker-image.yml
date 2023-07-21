@@ -27,7 +27,7 @@ jobs:
         id: get_task_def_arn
         run: |
           latest_task_def_arn=$(aws ecs list-task-definitions --family-prefix apica-poc --status ACTIVE --query 'taskDefinitionArns[0]' --output text)
-          echo "::set-output name=task_def_arn::$latest_task_def_arn"
+          echo "TASK_DEF_ARN=$latest_task_def_arn"
 
 #      - name: Build and push Docker image
 #        env:
