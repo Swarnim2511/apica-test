@@ -46,4 +46,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-north-1
         run: |
-            aws ecs update-service --cluster apica-test --service poc --task-definition "${LATEST_TASK_DEF_ARN}" --force-new-deployment --load-balancers arn:aws:elasticloadbalancing:eu-north-1:103431365848:targetgroup/keycloak-demo-target/3da967cc50d0d9e8
+            aws ecs update-service --cluster apica-test --service poc --task-definition "${LATEST_TASK_DEF_ARN}" --force-new-deployment --load-balancers="arn:aws:elasticloadbalancing:eu-north-1:103431365848:targetgroup/keycloak-demo-target/3da967cc50d0d9e8"
