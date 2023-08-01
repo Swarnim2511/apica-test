@@ -30,11 +30,18 @@ jobs:
            echo $latest_task_def_arn
            echo "::set-output name=latest_task_def_arn::$latest_task_def_arn" # Set the output variable to be used in the next step
 
-      - name: Update ECS service
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: eu-north-1
-        run: |
-          latest_task_def_arn=${{ steps.get_task_def_arn.outputs.latest_task_def_arn }} # Get the output variable from the previous step
-          aws ecs update-service --cluster ascent-applications --service asm-keycloak-spi --task-definition "${latest_task_def_arn}" --force-new-deployment
+      #- name: Update ECS service
+       # env:
+       #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+       #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #  AWS_DEFAULT_REGION: eu-north-1
+       # run: |
+       #   latest_task_def_arn=${{ steps.get_task_def_arn.outputs.latest_task_def_arn }} # Get the output variable from the previous step
+        #aws ecs update-service --cluster ascent-applications --service asm-keycloak-spi --task-definition "${latest_task_def_arn}" --force-new-deployment
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+        #  task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: poc
+          cluster: POC
+          wait-for-service-stability: true
