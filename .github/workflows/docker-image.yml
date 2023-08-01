@@ -46,4 +46,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: eu-north-1
         run: |
-            aws ecs update-service --cluster asm-keycloak-spi --service asm-keycloak-spi --task-definition "${latest_task_def_arn}" --force-new-deployment
+            aws ecs update-service --cluster ascent-applications --service asm-keycloak-spi --task-definition "${latest_task_def_arn}" --force-new-deployment
