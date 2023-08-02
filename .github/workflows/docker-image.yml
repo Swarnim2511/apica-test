@@ -19,16 +19,16 @@ jobs:
           java-version: 11
           distribution: 'adopt'
          
-      - name: Get Latest Task Definition ARN
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: eu-north-1
-        id: get_task_def_arn
-        run: |
-           latest_task_def_arn=$(aws ecs list-task-definitions --family-prefix poc --status ACTIVE --output json | jq -r '.taskDefinitionArns | sort_by(. | split(":")[-1] | tonumber) | reverse | .[0]')
-           echo $latest_task_def_arn
-           echo "::set-output name=latest_task_def_arn::$latest_task_def_arn" # Set the output variable to be used in the next step
+#      - name: Get Latest Task Definition ARN
+ #       env:
+  #        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+   #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #      AWS_DEFAULT_REGION: eu-north-1
+     #   id: get_task_def_arn
+      #  run: |
+       #    latest_task_def_arn=$(aws ecs list-task-definitions --family-prefix poc --status ACTIVE --output json | jq -r '.taskDefinitionArns | sort_by(. | split(":")[-1] | tonumber) | reverse | .[0]')
+        #   echo $latest_task_def_arn
+         #  echo "::set-output name=latest_task_def_arn::$latest_task_def_arn" # Set the output variable to be used in the next step
 
       #- name: Update ECS service
        # env:
@@ -38,10 +38,27 @@ jobs:
        # run: |
        #   latest_task_def_arn=${{ steps.get_task_def_arn.outputs.latest_task_def_arn }} # Get the output variable from the previous step
         #aws ecs update-service --cluster ascent-applications --service asm-keycloak-spi --task-definition "${latest_task_def_arn}" --force-new-deployment
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         AWS_DEFAULT_REGION: eu-north-1
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
       - name: Deploy Amazon ECS task definition
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         AWS_DEFAULT_REGION: eu-north-1
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: "poc"
-          service: "POC1"
-          cluster: "POC"
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
+
