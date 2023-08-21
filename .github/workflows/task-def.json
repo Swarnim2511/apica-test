@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "poc",
-            "image": ${{ secrets.ECR }},
+            "image": "${{ secrets.ECR }}",
             "cpu": 0,
             "portMappings": [
                 {
