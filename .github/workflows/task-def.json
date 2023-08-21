@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "poc",
-            "image": "103431365848.dkr.ecr.eu-north-1.amazonaws.com/apica:latest",
+            "image": ${{ secrets.ECR }},
             "cpu": 0,
             "portMappings": [
                 {
