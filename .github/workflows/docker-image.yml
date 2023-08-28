@@ -64,20 +64,11 @@ jobs:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
-        env: |
-          [
-            {
-              "name": "AWS_REGION",
-              "value": "${{ secrets.AWS_REGION }}"
-            }
-          ]
-
-    - name: Print Environment Variables
+    - name: Replace placeholders in task definition
       run: |
-        echo "AWS_REGION: $AWS_REGION"
+        sed -i "s/image/${{ secrets.IMAGE }}/" $ECS_TASK_DEFINITION
+        sed -i "s/region/${{ secrets.AWS_REGION }}/" $ECS_TASK_DEFINITION
 
-    - name: Echo Rendered Task Definition
-      run: cat ${{ env.ECS_TASK_DEFINITION }}
 
 
 #    - name: Deploy Amazon ECS task definition
