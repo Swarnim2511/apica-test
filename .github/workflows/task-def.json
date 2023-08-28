@@ -2,7 +2,7 @@
     "containerDefinitions": [
         {
             "name": "poc",
-            "image": "swarnim",
+            "image": "image",
             "cpu": 0,
             "portMappings": [
                 {
@@ -24,7 +24,7 @@
                 "options": {
                     "awslogs-create-group": "true",
                     "awslogs-group": "/ecs/poc",
-                    "awslogs-region": "${AWS_REGION}",
+                    "awslogs-region": "region",
                     "awslogs-stream-prefix": "ecs"
                 },
                 "secretOptions": []
