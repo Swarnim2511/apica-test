@@ -66,8 +66,8 @@ jobs:
         image: ${{ steps.build-image.outputs.image }}
     - name: Replace placeholders in task definition
       run: |
-        sed -i "s/image/${{ secrets.IMAGE }}/" $ECS_TASK_DEFINITION
-        sed -i "s/region/${{ secrets.AWS_REGION }}/" $ECS_TASK_DEFINITION
+        sed -i "s|image|${{ secrets.IMAGE }}|" $ECS_TASK_DEFINITION
+        sed -i "s|region|${{ secrets.AWS_REGION }}|" $ECS_TASK_DEFINITION
 
 
 
