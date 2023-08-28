@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-north-1:103431365848:task-definition/poc:2",
     "containerDefinitions": [
         {
             "name": "poc",
